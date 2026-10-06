@@ -1,0 +1,60 @@
+{
+  "name": "genpark-agentic-shipment-delivery-rescheduler-skill",
+  "version": "1.0.0",
+  "description": "Autonomous Shipment Exception Detection & Delivery Rescheduler. Ingests FedEx, UPS, DHL, and SF Express tracking webhooks, detects failed delivery attempts and customs delays, auto-negotiates delivery windows, locker hold orders, and neighbor safe-drop instructions.",
+  "tools": [
+    {
+      "name": "reschedule_shipment_delivery",
+      "description": "Parse carrier tracking events, diagnose delivery exceptions, generate optimal reschedule windows, or dispatch safe-drop instructions.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "parse_carrier_event",
+              "diagnose_exception",
+              "compute_reschedule_options",
+              "dispatch_reschedule_request"
+            ],
+            "description": "Logistics rescheduling action."
+          },
+          "carrier": {
+            "type": "string",
+            "enum": [
+              "FEDEX",
+              "UPS",
+              "USPS",
+              "DHL",
+              "SF_EXPRESS",
+              "GENERIC"
+            ],
+            "description": "Logistics carrier."
+          },
+          "tracking_number": {
+            "type": "string",
+            "description": "Package tracking number."
+          },
+          "raw_status": {
+            "type": "string",
+            "description": "Raw status description from carrier webhook."
+          },
+          "preferred_windows": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Preferred customer delivery windows."
+          },
+          "safe_drop_instructions": {
+            "type": "string",
+            "description": "Notes for front door, neighbor, or locker drop-off."
+          }
+        },
+        "required": [
+          "action"
+        ]
+      }
+    }
+  ]
+}
